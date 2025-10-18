@@ -12,3 +12,5 @@ def read_root():
         "message": "Welcome to the AWS Auth Lab API!",
         "environment": settings.environment
     }
+
+
