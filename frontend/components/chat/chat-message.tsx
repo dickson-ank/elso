@@ -21,7 +21,7 @@ export default function ChatMessage({ message }: { message: Message }) {
   return (
     <div className={`flex ${isAssistant ? "justify-start" : "justify-end"} gap-2`}>
       {isAssistant && (
-        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
           <span className="text-xs font-bold text-primary">AI</span>
         </div>
       )}
@@ -34,7 +34,7 @@ export default function ChatMessage({ message }: { message: Message }) {
               : "bg-primary text-primary-foreground rounded-tr-none"
           }`}
         >
-          <p className="whitespace-pre-wrap break-words">{message.content}</p>
+          <p className="whitespace-pre-wrap wrap-break">{message.content}</p>
         </div>
         <span className={`text-xs text-muted-foreground px-1 ${isAssistant ? "text-left" : "text-right"}`}>
           {formatTime(message.timestamp)}

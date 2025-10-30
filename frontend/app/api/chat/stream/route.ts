@@ -1,11 +1,11 @@
-import { streamText } from "ai"
+import { streamText } from "ai";
 
 export async function POST(request: Request) {
   try {
-    const { messages, fileContext } = await request.json()
+    const { messages, fileContext } = await request.json();
 
     if (!messages || messages.length === 0) {
-      return new Response("No messages provided", { status: 400 })
+      return new Response("No messages provided", { status: 400 });
     }
 
     // Use the Vercel AI Gateway with OpenAI by default
@@ -20,11 +20,11 @@ Provide clear, actionable insights and recommendations based on the information 
         content: msg.content,
       })),
       temperature: 0.7,
-    })
+    });
 
-    return result.toUIMessageStreamResponse()
+    return result.toUIMessageStreamResponse();
   } catch (error) {
-    console.error("[AI Stream Error]:", error)
-    return new Response("Failed to stream response", { status: 500 })
+    console.error("[AI Stream Error]:", error);
+    return new Response("Failed to stream response", { status: 500 });
   }
 }

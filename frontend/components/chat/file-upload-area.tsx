@@ -20,6 +20,7 @@ const ALLOWED_TYPES = [
   "image/jpeg",
   "image/png",
   "text/plain",
+  "application/html",
 ];
 
 export default function FileUploadArea({
@@ -97,7 +98,7 @@ export default function FileUploadArea({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`border-2 border-dashed rounded-lg p-8 text-center transition-all ${
+        className={`h-80 border-2 border-dashed rounded-lg p-8 text-center transition-all ${
           isDragging
             ? "border-primary bg-primary/5"
             : "border-border/50 bg-secondary/20 hover:bg-secondary/30"

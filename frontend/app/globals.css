@@ -13,7 +13,7 @@
   --popover-foreground: oklch(0.15 0.01 280);
   --primary: oklch(0.35 0.18 280);
   --primary-foreground: oklch(0.98 0.001 0);
-  --secondary: oklch(0.92 0.02 280);
+  --secondary: oklch(75.38% 0.03441 281.743);
   --secondary-foreground: oklch(0.35 0.18 280);
   --muted: oklch(0.94 0.01 0);
   --muted-foreground: oklch(0.5 0.02 280);
@@ -128,11 +128,19 @@
 
 /* Subtle gradient backgrounds */
 .gradient-subtle {
-  background: linear-gradient(135deg, rgba(89, 14, 119, 0.03) 0%, rgba(89, 14, 119, 0.01) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(89, 14, 119, 0.03) 0%,
+    rgba(89, 14, 119, 0.01) 100%
+  );
 }
 
 .dark .gradient-subtle {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(139, 92, 246, 0.03) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.08) 0%,
+    rgba(139, 92, 246, 0.03) 100%
+  );
 }
 
 .gradient-hover {
@@ -140,9 +148,21 @@
 }
 
 .gradient-hover:hover {
-  background: linear-gradient(135deg, rgba(89, 14, 119, 0.06) 0%, rgba(89, 14, 119, 0.02) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(89, 14, 119, 0.06) 0%,
+    rgba(89, 14, 119, 0.02) 100%
+  );
 }
 
 .dark .gradient-hover:hover {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(139, 92, 246, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.12) 0%,
+    rgba(139, 92, 246, 0.05) 100%
+  );
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }

@@ -58,9 +58,10 @@ export default function ChatInterface({ user }: { user: User }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const userScrolledUp = useRef(false);
 
-  const { messages, isLoading, error, sendMessage, clearMessages } = useAiChat({
-    fileContext,
-  });
+  const { messages, isLoading, error, streamingContent, sendMessage } =
+    useAiChat({
+      fileContext,
+    });
 
   // Show welcome message on first load
   useEffect(() => {
@@ -112,7 +113,7 @@ export default function ChatInterface({ user }: { user: User }) {
     if (!userScrolledUp.current) {
       scrollToBottom();
     }
-  }, [chatMessages]);
+  }, [chatMessages, streamingContent]);
 
   const handleFileStaging = async (files: File[]) => {
     // Add files to staging
@@ -232,11 +233,11 @@ export default function ChatInterface({ user }: { user: User }) {
   return (
     <div className="flex flex-col h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b border-border bg-card/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+      <nav className="border-b border-border shadow-primary/30 bg-card/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-43 h-10 mx-auto rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">
+            <div className="w-43 h-10 mx-auto rounded-lg flex items-center justify-center">
+              <span className="text-primary font-extrabold text-lg">
                 ELSO DENTAL AI
               </span>
             </div>
@@ -259,13 +260,17 @@ export default function ChatInterface({ user }: { user: User }) {
       {/* Main Content Area - Two Columns */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left: Chat Area */}
-        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto">
+        <div
+          ref={scrollContainerRef}
+          className="hide-scrollbar flex-1 overflow-y-auto"
+        >
           <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
             {chatMessages.map((message) => {
               if (message.role === "system") {
                 return (
                   <div key={message.id}>
                     <FileList
+                      stagedFiles={stagedFiles}
                       files={message.files}
                       isProcessing={false}
                       onRemoveFile={handleRemoveFile}
@@ -291,23 +296,20 @@ export default function ChatInterface({ user }: { user: User }) {
               </Alert>
             )}
 
-            {isProcessing && (
-              <div className="flex justify-center py-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
-                  <div
-                    className="w-2 h-2 bg-primary rounded-full animate-bounce"
-                    style={{ animationDelay: "0.1s" }}
-                  ></div>
-                  <div
-                    className="w-2 h-2 bg-primary rounded-full animate-bounce"
-                    style={{ animationDelay: "0.2s" }}
-                  ></div>
-                </div>
-              </div>
+            {/* Show streaming content while loading */}
+            {isLoading && streamingContent && (
+              <ChatMessage
+                message={{
+                  id: "streaming",
+                  role: "assistant",
+                  content: streamingContent,
+                  timestamp: new Date(),
+                }}
+              />
             )}
 
-            {isLoading && (
+            {/* Show loading indicator only when no streaming content yet */}
+            {isLoading && !streamingContent && (
               <div className="flex justify-start">
                 <div className="flex items-center gap-2 px-4 py-3 rounded-lg bg-secondary/40">
                   <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
@@ -328,24 +330,17 @@ export default function ChatInterface({ user }: { user: User }) {
         </div>
 
         {/* Right: Upload Sidebar */}
-        <div className="w-80 border-l border-border bg-card/50 backdrop-blur-sm overflow-y-auto">
-          <div className="p-4 sticky top-0 bg-card/80 backdrop-blur-sm border-b border-border">
-            <h3 className="font-semibold text-sm text-foreground">
-              Upload Files
-            </h3>
-            <p className="text-xs text-muted-foreground mt-1">
-              Drop files here to analyze
-            </p>
-          </div>
-          <div className="p-4">
+        <div className="w-80 overflow-y-auto">
+          <div className="p-4 mt-12">
             <FileUploadArea
               onFilesSelected={handleFileStaging}
               isLoading={false}
             />
             {stagedFiles.length > 0 && (
-              <div className="mt-4 text-xs text-muted-foreground">
-                {stagedFiles.length} file(s) ready. Your next message will
-                include these files.
+              <div className="text-center mx-auto">
+                <p className="text-base font-bold text-muted-foreground uppercase tracking-wide">
+                  Uploaded Files ({stagedFiles.length})
+                </p>
               </div>
             )}
           </div>
@@ -353,14 +348,14 @@ export default function ChatInterface({ user }: { user: User }) {
       </div>
 
       {/* Input Area */}
-      <div className="border-t border-border bg-card/80 backdrop-blur-sm sticky bottom-0">
-        <div className="max-w-5xl mx-auto px-4 py-4">
+      <div className="sticky bottom-0">
+        <div className="max-w-4xl mx-auto px-4 py-4">
           <form onSubmit={handleSendMessage} className="flex gap-2">
             <Input
               placeholder={
                 stagedFiles.length > 0
                   ? `Message with ${stagedFiles.length} file(s)...`
-                  : "Ask Elso about your analysis..."
+                  : "Ask Elso to analyse..."
               }
               value={inputValue}
               onSubmit={(value) => {
@@ -385,7 +380,7 @@ export default function ChatInterface({ user }: { user: User }) {
               {isLoading
                 ? "Thinking..."
                 : isProcessing
-                ? "Uploading..."
+                ? "Processing..."
                 : "Send"}
             </Button>
           </form>
