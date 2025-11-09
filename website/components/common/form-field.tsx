@@ -3,16 +3,7 @@
 import type React from "react";
 import { Input } from "@/components/ui/input";
 
-interface FormFieldProps {
-  label: string;
-  name: string;
-  type?: string;
-  placeholder: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  autoCapitalize?: string;
-  autoCorrect?: string;
-}
+
 
 export default function FormField({
   label,

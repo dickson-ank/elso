@@ -6,25 +6,6 @@ import ChatInput from "./chat-input";
 import UploadArea from "./upload-area";
 import Header from "./header";
 
-interface ChatPageProps {
-  onLogout: () => void;
-}
-
-interface Message {
-  id: string;
-  type: "user" | "assistant";
-  content: string;
-  files?: File[];
-  timestamp: Date;
-}
-
-interface UploadedFile {
-  id: string;
-  file: File;
-  name: string;
-  size: number;
-}
-
 export default function ChatPage({ onLogout }: ChatPageProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
@@ -111,16 +92,40 @@ export default function ChatPage({ onLogout }: ChatPageProps) {
         throw new Error("Failed to send message");
       }
 
-      const data = await response.json();
+      if (!response.body) {
+        throw new Error("Response body is null");
+      }
 
-      const assistantMessage: Message = {
-        id: `msg_${Date.now()}_resp`,
-        type: "assistant",
-        content: data.response,
-        timestamp: new Date(),
-      };
+      // Add empty assistant message
+      const assistantId = `msg_${Date.now()}_resp`;
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: assistantId,
+          type: "assistant",
+          content: "",
+          timestamp: new Date(),
+        },
+      ]);
 
-      setMessages((prev) => [...prev, assistantMessage]);
+      // Stream the response
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullContent = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        fullContent += decoder.decode(value);
+
+        // Update the last message with accumulated content
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1].content = fullContent;
+          return updated;
+        });
+      }
     } catch (err) {
       console.error("Error sending message:", err);
       setError("Failed to send message. Please try again.");

@@ -3,13 +3,7 @@
 import type React from "react";
 import { X } from "lucide-react";
 
-interface FileItemProps {
-  id: string;
-  name: string;
-  size: number;
-  icon: React.ReactNode;
-  onRemove: (id: string) => void;
-}
+
 
 export default function FileItem({
   id,

@@ -4,9 +4,6 @@ import { useState } from "react"
 import SignInForm from "./sign-in-form"
 import SignUpForm from "./sign-up-form"
 
-interface AuthPageProps {
-  onAuthSuccess: () => void
-}
 
 export default function AuthPage({ onAuthSuccess }: AuthPageProps) {
   const [isSignUp, setIsSignUp] = useState(false)

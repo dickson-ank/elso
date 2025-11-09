@@ -1,3 +1,5 @@
+import client from "@/lib/client" 
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData()
@@ -7,26 +9,32 @@ export async function POST(request: Request) {
     if (!message && files.length === 0) {
       return Response.json({ error: "Message or files required" }, { status: 400 })
     }
+  const completion = await client.chat.completions.create({
+    model: "openai/gpt-oss-120b",
+    messages: [{ role: "user", content: `${message}` }],
+    temperature: 1,
+    top_p: 1,
+    max_tokens: 4096,
+    stream: true,
+  });
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      for await (const chunk of completion) {
+        const text = chunk.choices[0]?.delta?.content || "";
+        controller.enqueue(encoder.encode(text));
+      }
+      controller.close();
+    },
+  });
 
-    // Simulate AI processing with file awareness
-    let responseContent = `I've received your message${files.length > 0 ? ` with ${files.length} file(s)` : ""}.`
-
-    if (files.length > 0) {
-      const fileNames = files.map((f) => f.name).join(", ")
-      responseContent += ` Files analyzed: ${fileNames}.`
-    }
-
-    if (message) {
-      responseContent += ` You said: "${message}". How can I help you further?`
-    }
-
-    return Response.json({
-      success: true,
-      response: responseContent,
-      filesProcessed: files.length,
-    })
+  return new Response(stream)
   } catch (error) {
     console.error("Error processing chat:", error)
     return Response.json({ error: "Failed to process message" }, { status: 500 })
   }
 }
+  
+
+
+  

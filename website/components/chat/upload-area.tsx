@@ -7,18 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Upload, FileText, ImageIcon, File } from "lucide-react";
 import FileItem from "@/components/common/file-item";
 
-interface UploadedFile {
-  id: string;
-  file: File;
-  name: string;
-  size: number;
-}
-
-interface UploadAreaProps {
-  uploadedFiles: UploadedFile[];
-  onFileUpload: (files: FileList) => void;
-  onRemoveFile: (fileId: string) => void;
-}
 
 export default function UploadArea({
   uploadedFiles,

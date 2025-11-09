@@ -7,10 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-interface SignInFormProps {
-  onSuccess: () => void;
-  onToggle: () => void;
-}
+
 
 export default function SignInForm({ onSuccess, onToggle }: SignInFormProps) {
   const [loginIdentifier, setLoginIdentifier] = useState("");

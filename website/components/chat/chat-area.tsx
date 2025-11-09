@@ -1,14 +1,7 @@
 "use client";
 
-import type React from "react";
 import MessageBubble from "./message-bubble";
 import LoadingSpinner from "@/components/common/loading-spinner";
-
-interface ChatAreaProps {
-  messages: any[];
-  isLoading: boolean;
-  chatEndRef: React.RefObject<HTMLDivElement | null>;
-}
 
 export default function ChatArea({
   messages,
@@ -16,7 +9,7 @@ export default function ChatArea({
   chatEndRef,
 }: ChatAreaProps) {
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-background">
+    <div className="flex-1 flex flex-col overflow-hidden wrap-break-word whitespace-normal bg-background">
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="flex flex-col gap-4 p-4 md:p-6">
           {messages.length === 0 ? (
@@ -62,16 +55,6 @@ export default function ChatArea({
           <div ref={chatEndRef} />
         </div>
       </div>
-
-      <style>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </div>
   );
 }

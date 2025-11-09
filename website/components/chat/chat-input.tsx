@@ -6,13 +6,6 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Send, Menu, Loader } from "lucide-react";
 
-interface ChatInputProps {
-  onSendMessage: (message: string) => void;
-  isLoading: boolean;
-  onMobileUploadToggle: () => void;
-  fileCount: number;
-}
-
 export default function ChatInput({
   onSendMessage,
   isLoading,

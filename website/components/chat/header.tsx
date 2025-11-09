@@ -3,11 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 
-interface HeaderProps {
-  userName: string;
-  onLogout: () => void;
-}
-
 export default function Header({ userName, onLogout }: HeaderProps) {
   return (
     <header className="bg-card border-b border-border px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">

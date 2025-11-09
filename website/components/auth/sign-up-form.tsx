@@ -7,10 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import FormField from "@/components/common/form-field"
 
-interface SignUpFormProps {
-  onSuccess: () => void
-  onToggle: () => void
-}
 
 export default function SignUpForm({ onSuccess, onToggle }: SignUpFormProps) {
   const [formData, setFormData] = useState({
