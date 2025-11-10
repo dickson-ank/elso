@@ -45,7 +45,7 @@ export default function SignInForm({ onSuccess, onToggle }: SignInFormProps) {
       );
       onSuccess();
     } catch (err) {
-      setError("Sign in failed. Please try again.");
+      setError(`Sign in failed. Please try again: ${err}`);
     } finally {
       setIsLoading(false);
     }
@@ -136,7 +136,7 @@ export default function SignInForm({ onSuccess, onToggle }: SignInFormProps) {
       </Button>
 
       <p className="text-center text-sm text-muted-foreground">
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <button
           type="button"
           onClick={onToggle}

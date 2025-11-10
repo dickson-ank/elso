@@ -58,7 +58,7 @@ export default function SignUpForm({ onSuccess, onToggle }: SignUpFormProps) {
       localStorage.setItem("userEmail", email)
       onSuccess()
     } catch (err) {
-      setError("Sign up failed. Please try again.")
+      setError(`Sign up failed. Please try again: ${err}`)
     } finally {
       setIsLoading(false)
     }

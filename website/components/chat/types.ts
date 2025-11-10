@@ -17,7 +17,7 @@ interface MessageBubbleProps {
   message: {
     type: "user" | "assistant";
     content: string;
-    files?: any[];
+    files?: File[];
     timestamp?: Date;
   };
 }
@@ -39,7 +39,7 @@ interface ChatInputProps {
 }
 
 interface ChatAreaProps {
-  messages: any[];
+  messages: string[];
   isLoading: boolean;
   chatEndRef: React.RefObject<HTMLDivElement | null>;
 }
