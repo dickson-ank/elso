@@ -5,6 +5,18 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const message = formData.get("message") as string;
     const files = formData.getAll("files") as File[];
+    // const filesMessages: ChatCompletionMessage[] = files.map((file) => ({
+    //   role: "user",
+    //   content: `Attached file: ${file}`,
+    // }));
+    const images_Base64 = await Promise.all(
+      files.map(async (file) => {
+        const buffer = await file.arrayBuffer();
+        const image_b64 = Buffer.from(buffer).toString("base64");
+        return image_b64;
+      })
+    );
+    console.log(images_Base64.join("*************************"));
 
     if (!message && files.length === 0) {
       return Response.json(
@@ -18,9 +30,9 @@ export async function POST(request: Request) {
         {
           role: "system",
           content:
-            "You are a seasoned dentist, analyse the images attached and provide first-hand diagnosis",
+            "You are a seasoned dentist, analyse the images transformed to base64 encoding and provide in bullet-formatted brief descriptions, a first-hand diagnosis, if you see anything unrelated to your job, report what they are and ask your client to upload the right images",
         },
-        { role: "system", content: `${message}` },
+        { role: "user", content: `${message} ${images_Base64.join(",")}` },
       ],
       temperature: 0.2,
       top_p: 1,
