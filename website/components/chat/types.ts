@@ -13,15 +13,6 @@ interface UploadedFile {
   size: number;
 }
 
-interface MessageBubbleProps {
-  message: {
-    type: "user" | "assistant";
-    content: string;
-    files?: File[];
-    timestamp?: Date;
-  };
-}
-
 interface HeaderProps {
   userName: string;
   onLogout: () => void;
@@ -38,8 +29,12 @@ interface ChatInputProps {
   fileCount: number;
 }
 
+interface MessageBubbleProps {
+  message: Message;
+}
+
 interface ChatAreaProps {
-  messages: string[];
+  messages: Message[];
   isLoading: boolean;
   chatEndRef: React.RefObject<HTMLDivElement | null>;
 }
