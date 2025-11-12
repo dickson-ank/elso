@@ -30,9 +30,9 @@ export async function POST(request: Request) {
         {
           role: "system",
           content:
-            "You are a seasoned dentist, analyse the images transformed to base64 encoding and provide in bullet-formatted brief descriptions, a first-hand diagnosis, if you see anything unrelated to your job, report what they are and ask your client to upload the right images",
+            "You are an AI assistant that helps people find information. Help as much as possible based on the provided context.",
         },
-        { role: "user", content: `${message} ${images_Base64.join(",")}` },
+        { role: "user", content: `${message}` },
       ],
       temperature: 0.2,
       top_p: 1,
