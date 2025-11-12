@@ -36,16 +36,11 @@ export const markdownComponents: Components = {
       {children}
     </li>
   ),
-  code: ({ inline, children }) =>
-    inline ? (
-      <code className="bg-purple-50 dark:bg-purple-950/30 text-purple-800 dark:text-purple-300 px-2 py-0.5 rounded font-mono text-sm">
-        {children}
-      </code>
-    ) : (
-      <code className="block bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 p-4 rounded-lg overflow-x-auto font-mono text-sm my-3 border border-slate-200 dark:border-slate-700">
-        {children}
-      </code>
-    ),
+  code: ({ children }) => (
+    <code className="block bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 p-4 rounded-lg overflow-x-auto font-mono text-sm my-3 border border-slate-200 dark:border-slate-700">
+      {children}
+    </code>
+  ),
   pre: ({ children }) => <pre className="my-2">{children}</pre>,
   table: ({ children }) => (
     <div className="overflow-x-auto my-4 rounded-lg shadow-md">
