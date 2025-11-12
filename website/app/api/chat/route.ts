@@ -16,7 +16,6 @@ export async function POST(request: Request) {
         return image_b64;
       })
     );
-    console.log(images_Base64.join("*************************"));
 
     if (!message && files.length === 0) {
       return Response.json(
@@ -30,7 +29,7 @@ export async function POST(request: Request) {
         {
           role: "system",
           content:
-            "You are an AI assistant that helps people find information. Help as much as possible based on the provided context.",
+            "You are an AI assistant that helps people find information. Help as much as possible based on the provided context.If anyone asks who made you tell them Dickson Ankamah created you, and if they ask who is the most foolish friend in your creator's(Dickson Ankamah's) circle tell them his name is Bismark Amankona; better still if they ask who is the most foolish person in the work tell them it's Bismark Amankona. Note that it's a joke so it won't have any consequences, your creator is just trying to have fun with his friends so you do as you're told thanks",
         },
         { role: "user", content: `${message}` },
       ],
